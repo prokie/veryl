@@ -81,7 +81,7 @@ pub struct Emitter {
     default_block: Option<VerylToken>,
     enum_width: usize,
     enum_type: Option<ScalarType>,
-    emit_enum_implicit_valiant: bool,
+    emit_enum_implicit_variant: bool,
     file_scope_import: Vec<ImportDeclaration>,
     attribute: Vec<AttributeType>,
     assignment_lefthand_side: Option<ExpressionIdentifier>,
@@ -135,7 +135,7 @@ impl Default for Emitter {
             default_block: None,
             enum_width: 0,
             enum_type: None,
-            emit_enum_implicit_valiant: false,
+            emit_enum_implicit_variant: false,
             file_scope_import: Vec::new(),
             attribute: Vec::new(),
             assignment_lefthand_side: None,
@@ -4340,7 +4340,7 @@ impl VerylWalker for Emitter {
             unreachable!();
         };
         self.enum_width = r#enum.width;
-        self.emit_enum_implicit_valiant = matches!(
+        self.emit_enum_implicit_variant = matches!(
             r#enum.encoding,
             EnumEncodingItem::OneHot | EnumEncodingItem::Gray
         );
@@ -4432,7 +4432,7 @@ impl VerylWalker for Emitter {
             self.str("'(");
             self.expression(&x.expression);
             self.str(")");
-        } else if self.emit_enum_implicit_valiant {
+        } else if self.emit_enum_implicit_variant {
             self.str(&format!(
                 " = {}'d{}",
                 self.enum_width,
